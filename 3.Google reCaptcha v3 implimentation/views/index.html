@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+        body {
+            font-family: 'Helvetica', sans-serif;
+            color: #fff;
+            margin: 0px;
+            padding: 0px;
+            background-color: #ffe1c1;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .app__container {
+            width: 420px;
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+        }
+
+        textarea {
+            margin-bottom: 10px;
+            height: 100px;
+            font-size: 20px;
+        }
+
+        button {
+            margin: auto;
+            background: #4267b2;
+            text-align: center;
+            padding: 7px 15px;
+            font-size: 20xpx;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 400;
+            border: 0px;
+            width: 100%;
+            outline: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+    <body>
+        <div class="app__container">
+            <textarea id="user-message" placeholder="Write some message"></textarea>
+            <button id="submit-button">Submit</button>
+        </div>
+        <script src="https://www.google.com/recaptcha/api.js?render=6LcRDFklAAAAABqhBq3vrP-4Ih5p1DDytUuDyS0r"></script>
+        <script>
+            const submitButton = document.querySelector('#submit-button');
+
+            function getCaptchaToken(callback) {
+                grecaptcha.ready( () => {
+                    grecaptcha.execute('6LcRDFklAAAAABqhBq3vrP-4Ih5p1DDytUuDyS0r', {action: 'submit_message'}).then( (token) => {
+                        callback(token)
+                    });;
+                });
+            }
+            
+
+            submitButton.onclick = (event) => {
+                const userMessage = document.querySelector('#user-message').value;
+                if(userMessage === '' || userMessage === null) {
+                    alert("Message Can't be empty");
+                    return;
+                }
+
+                getCaptchaToken( (token) => {
+                     fetch('/storeMessage', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': undefined
+                        },
+                        body: JSON.stringify({
+                            message: userMessage,
+                            token
+                        })
+                    })
+                    .then((resp) => resp.json())
+                    .then((result) => {
+                        if(result.Code === 200) {
+                            alert('Your message is submitted')
+                        } else {
+                            alert('Bots are not allowed')
+                        }
+                    })
+                    .catch((error) => {
+                        alert(error.Message)
+                    });
+                });
+            }
+        </script>
+    </body>
+</html>
