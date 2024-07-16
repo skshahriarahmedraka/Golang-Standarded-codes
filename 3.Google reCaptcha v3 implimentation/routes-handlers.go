@@ -24,7 +24,7 @@ func StoreMessage(response http.ResponseWriter, request *http.Request) {
 
 	decoder := json.NewDecoder(request.Body)
 	decoderErr := decoder.Decode(&storeMessageRequest)
-    fmt.Println("🚀 ~ file: routes-handlers.go ~ line 27 ~ funcStoreMessage ~ storeMessageRequest : ", storeMessageRequest)
+	fmt.Println("🚀 ~ file: routes-handlers.go ~ line 27 ~ funcStoreMessage ~ storeMessageRequest : ", storeMessageRequest)
 	defer request.Body.Close()
 
 	if decoderErr != nil {
@@ -49,7 +49,7 @@ func StoreMessage(response http.ResponseWriter, request *http.Request) {
 
 			decoder := json.NewDecoder(verifyCaptchaResponse.Body)
 			decoderErr := decoder.Decode(&captchaVerifyResponse)
-            fmt.Println("🚀 ~ file: routes-handlers.go ~ line 50 ~ funcStoreMessage ~ captchaVerifyResponse : ", captchaVerifyResponse)
+			fmt.Println("🚀 ~ file: routes-handlers.go ~ line 50 ~ funcStoreMessage ~ captchaVerifyResponse : ", captchaVerifyResponse)
 
 			defer verifyCaptchaResponse.Body.Close()
 

@@ -1,3 +1,1 @@
 ### Golang Developing standard templates
-
-
